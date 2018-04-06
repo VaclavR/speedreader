@@ -1,9 +1,34 @@
 <div class="container">
-  <div class="row">
-    <div class="col-12 mt-2">
+  <div class="row" *ngIf="!fastRead">
+    <div class="col-12 mt-5">
       <h1>{{ article.title }}</h1>
       <p>{{ article.content }}</p>
       <a routerLink="/articles" class="btn btn-info">Back</a>
     </div>
   </div>
+
+  <div class="row" *ngIf="fastRead">
+    <div class="col-12 mt-2">
+      <h2>{{ article.title }}</h2>
+      <div class="row">
+        <div class="col-4">
+          <div class="form-group">
+            <label for="text-speed">Speed {{ textSpeed }}ms, Time {{ readingTime }}s, Words {{ wordsNumber }}</label>
+            <input id="text-speed" class="form-control" type="range" [(ngModel)]="textSpeed" min="50" max="350" step="10" (input)="showStatistic()">
+          </div>
+        </div>
+        <div class="col-8">
+          <button class="btn btn-danger mt-3" (click)="onLaunch()">Launch</button>
+          <a routerLink="/articles" class="btn btn-info mt-3">Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-5" *ngIf="isRun">
+    <div class="col-12 mt-5">
+      <div class="text-center big-text">{{ currentWord }}</div>
+    </div>
+  </div>
+
 </div>
