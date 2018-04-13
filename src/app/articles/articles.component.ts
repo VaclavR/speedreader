@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Article } from '../shared/article.model';
 import { FirebaseService } from '../firebase.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.css']
 })
-export class ArticlesComponent implements OnInit {
+export class ArticlesComponent implements OnInit, OnDestroy {
   articlesSubscription: Subscription;
   articles: Article[];
 
@@ -21,6 +21,10 @@ export class ArticlesComponent implements OnInit {
     if (!this.articles) {
       this.fbService.getArticles();
     }
+  }
+
+  ngOnDestroy() {
+    this.articlesSubscription.unsubscribe();
   }
 
 }
