@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
+import { FirebaseService } from './firebase.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import * as firebase from 'firebase/app';
 
 export class AppComponent implements OnInit {
 
-  constructor(public afAuth: AngularFireAuth) {}
+  constructor(public afAuth: AngularFireAuth, private fbService: FirebaseService) {}
 
   ngOnInit() {
     this.afAuth.auth.signInAnonymously().catch((error) => {
@@ -21,7 +21,8 @@ export class AppComponent implements OnInit {
         // User is signed in.
         const isAnonymous = user.isAnonymous;
         const uid = user.uid;
-        console.log(uid, isAnonymous);
+        console.log('Signed to the Firebase as an anonymous user.');
+        this.fbService.fetchArticles();
         // ...
       } else {
         // User is signed out.

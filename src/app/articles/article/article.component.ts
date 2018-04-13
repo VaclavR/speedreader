@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Article } from '../../shared/article.model';
 import { articles } from '../../shared/articles';
+import { FirebaseService } from '../../firebase.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class ArticleComponent implements OnInit {
   wordsNumber: number;
   readingTime: number;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private fbService: FirebaseService) { }
 
   ngOnInit() {
     if (this.route.snapshot.url[1].path === 'fast') {

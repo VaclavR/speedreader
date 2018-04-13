@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Article } from '../shared/article.model';
-import { articles } from '../shared/articles';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
+import { FirebaseService } from '../firebase.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-articles',
@@ -10,15 +9,18 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./articles.component.css']
 })
 export class ArticlesComponent implements OnInit {
+  articlesSubscription: Subscription;
   articles: Article[];
-  fetchedArticles: Observable<any>;
 
-  constructor(db: AngularFirestore) {
-    this.fetchedArticles = db.collection('articles').valueChanges();
-  }
+  constructor(private fbService: FirebaseService) {}
 
   ngOnInit() {
-    this.articles = articles;
+    this.articlesSubscription = this.fbService.articlesChanged.subscribe((articles: Article[]) => {
+      this.articles = articles;
+    });
+    if (!this.articles) {
+      this.fbService.getArticles();
+    }
   }
 
 }
